@@ -1,0 +1,1 @@
+Essa é uma simples REST API criada para testar diferentes Frameworks para desenvolvimento em conjunto com o Spring Boot.
