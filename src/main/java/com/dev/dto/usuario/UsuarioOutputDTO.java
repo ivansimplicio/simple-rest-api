@@ -17,7 +17,7 @@ public class UsuarioOutputDTO implements Serializable{
 	
 	private Integer id;
 	private String nome;
-	private String CPF;
+	private String cpf;
 	private String email;
 
 }

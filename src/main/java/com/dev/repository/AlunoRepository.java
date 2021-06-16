@@ -7,5 +7,7 @@ import com.dev.domain.Aluno;
 
 @Repository
 public interface AlunoRepository extends JpaRepository<Aluno, Integer> {
+	
+	Aluno findByMatricula(String matricula);
 
 }

@@ -4,11 +4,14 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.dev.service.validation.AlunoInsert;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AlunoInsert
 @Getter
 @Setter
 @NoArgsConstructor
