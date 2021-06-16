@@ -1,5 +1,9 @@
 package com.dev.dto.professor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.dev.dto.turma.TurmaSimpleDTO;
 import com.dev.dto.usuario.UsuarioOutputDTO;
 
 import lombok.AllArgsConstructor;
@@ -18,6 +22,6 @@ public class ProfessorDTO extends UsuarioOutputDTO{
 	private Double salario;
 	private String formacao;
 	
-	//adicionar lista de turmas
+	private List<TurmaSimpleDTO> turmas = new ArrayList<>();
 
 }

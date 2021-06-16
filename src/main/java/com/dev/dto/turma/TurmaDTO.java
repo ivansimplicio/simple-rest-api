@@ -1,10 +1,8 @@
-package com.dev.dto.aluno;
+package com.dev.dto.turma;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import com.dev.dto.turma.TurmaSimpleDTO;
 import com.dev.dto.usuario.UsuarioOutputDTO;
 
 import lombok.AllArgsConstructor;
@@ -16,15 +14,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AlunoDTO extends UsuarioOutputDTO{
+public class TurmaDTO extends TurmaSimpleDTO{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String matricula;
-	private String nomeDaMae;
-	private String nomeDoPai;
-	private Date dataDeNascimento;
+	private UsuarioOutputDTO professor;
 	
-	private List<TurmaSimpleDTO> turmas = new ArrayList<>();
+	private List<UsuarioOutputDTO> alunos = new ArrayList<>();
 
 }
