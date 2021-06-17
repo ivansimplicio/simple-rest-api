@@ -26,6 +26,8 @@ import com.dev.dto.aluno.AlunoSaveDTO;
 import com.dev.dto.usuario.UsuarioOutputDTO;
 import com.dev.service.AlunoService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/alunos")
 public class AlunoResource {
@@ -36,6 +38,7 @@ public class AlunoResource {
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@ApiOperation("Buscar um aluno por ID")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<AlunoDTO> find(@PathVariable Integer id){
 		Aluno obj = service.find(id);
@@ -43,6 +46,7 @@ public class AlunoResource {
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
+	@ApiOperation("Listar todos os alunos")
 	@GetMapping()
 	public ResponseEntity<List<UsuarioOutputDTO>> findAll(){
 		List<Aluno> list = service.findAll();
@@ -52,6 +56,7 @@ public class AlunoResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
+	@ApiOperation("Cadastrar um novo aluno")
 	@PostMapping()
 	public ResponseEntity<Void> insert(@Valid @RequestBody AlunoSaveDTO obj){
 		Aluno objAux = modelMapper.map(obj, Aluno.class);
@@ -63,6 +68,7 @@ public class AlunoResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@ApiOperation("Atualizar os dados de um aluno")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody AlunoInputDTO obj){
 		Aluno objAux = modelMapper.map(obj, Aluno.class);
@@ -71,6 +77,7 @@ public class AlunoResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation("Excluir o cadastro de um aluno")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);

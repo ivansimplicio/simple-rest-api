@@ -26,6 +26,8 @@ import com.dev.dto.professor.ProfessorSaveDTO;
 import com.dev.dto.usuario.UsuarioOutputDTO;
 import com.dev.service.ProfessorService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "professores")
 public class ProfessorResource {
@@ -36,6 +38,7 @@ public class ProfessorResource {
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@ApiOperation("Buscar um professor por ID")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ProfessorDTO> find(@PathVariable Integer id){
 		Professor obj = service.find(id);
@@ -43,6 +46,7 @@ public class ProfessorResource {
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
+	@ApiOperation("Listar todos os professores")
 	@GetMapping()
 	public ResponseEntity<List<UsuarioOutputDTO>> findAll(){
 		List<Professor> list = service.findAll();
@@ -53,6 +57,7 @@ public class ProfessorResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
+	@ApiOperation("Cadastrar um novo professor")
 	@PostMapping()
 	public ResponseEntity<Void> insert(@Valid @RequestBody ProfessorSaveDTO obj){
 		Professor objAux = modelMapper.map(obj, Professor.class);
@@ -64,6 +69,7 @@ public class ProfessorResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@ApiOperation("Atualizar os dados de um professor")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody ProfessorInputDTO obj){
 		Professor objAux = modelMapper.map(obj, Professor.class);
@@ -72,6 +78,7 @@ public class ProfessorResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation("Excluir o cadastro de um professor")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);

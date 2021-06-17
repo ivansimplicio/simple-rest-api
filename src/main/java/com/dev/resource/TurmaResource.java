@@ -25,6 +25,8 @@ import com.dev.dto.turma.TurmaSaveDTO;
 import com.dev.dto.turma.TurmaSimpleDTO;
 import com.dev.service.TurmaService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/turmas")
 public class TurmaResource {
@@ -35,6 +37,7 @@ public class TurmaResource {
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@ApiOperation("Buscar uma turma por ID")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<TurmaDTO> find(@PathVariable Integer id){
 		Turma obj = service.find(id);
@@ -42,6 +45,7 @@ public class TurmaResource {
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
+	@ApiOperation("Listar todas as turmas")
 	@GetMapping()
 	public ResponseEntity<List<TurmaSimpleDTO>> findAll(){
 		List<Turma> list = service.findAll();
@@ -51,6 +55,7 @@ public class TurmaResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
+	@ApiOperation("Criar uma nova turma")
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody TurmaSaveDTO obj){
 		Turma objAux = modelMapper.map(obj, Turma.class);
@@ -62,6 +67,7 @@ public class TurmaResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@ApiOperation("Atualizar os dados de uma turma")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody TurmaSaveDTO obj){
 		Turma objAux = modelMapper.map(obj, Turma.class);
@@ -70,12 +76,14 @@ public class TurmaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation("Excluir uma turma")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation("Matricular alunos na turma")
 	@PutMapping(value = "/{id}/matricular")
 	public ResponseEntity<Void> matricular(@PathVariable Integer id, @RequestBody TurmaDTO obj){
 		Turma objAux = modelMapper.map(obj, Turma.class);
@@ -84,6 +92,7 @@ public class TurmaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation("Remover alunos da turma")
 	@PutMapping(value = "/{id}/desmatricular")
 	public ResponseEntity<Void> desmatricular(@PathVariable Integer id, @RequestBody TurmaDTO obj){
 		Turma objAux = modelMapper.map(obj, Turma.class);
