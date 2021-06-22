@@ -48,7 +48,7 @@ public class AlunoResource {
 	public ResponseEntity<AlunoDTO> find(@PathVariable Integer id){
 		Aluno obj = service.find(id);
 		AlunoDTO objDTO = modelMapper.map(obj, AlunoDTO.class);
-		objDTO.add(linkTo(methodOn(AlunoResource.class).find(objDTO.getId())).withSelfRel());
+		objDTO.add(linkTo(AlunoResource.class).slash(objDTO.getId()).withSelfRel());
 		objDTO.add(linkTo(methodOn(AlunoResource.class).findAll()).withRel("lista de alunos"));
 		return ResponseEntity.ok().body(objDTO);
 	}
@@ -63,7 +63,7 @@ public class AlunoResource {
 		listDTO.forEach(x -> {
 			x.add(linkTo(methodOn(AlunoResource.class).find(x.getId())).withSelfRel());
 		});
-		Link link = linkTo(methodOn(AlunoResource.class).findAll()).withSelfRel();
+		Link link = linkTo(AlunoResource.class).withSelfRel();
 		CollectionModel<UsuarioOutputDTO> collectionModel = CollectionModel.of(listDTO, link);
 		
 		return ResponseEntity.ok().body(collectionModel);

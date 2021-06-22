@@ -47,7 +47,7 @@ public class TurmaResource {
 	public ResponseEntity<TurmaDTO> find(@PathVariable Integer id){
 		Turma obj = service.find(id);
 		TurmaDTO objDTO = modelMapper.map(obj, TurmaDTO.class);
-		objDTO.add(linkTo(methodOn(TurmaResource.class).find(objDTO.getId())).withSelfRel());
+		objDTO.add(linkTo(TurmaResource.class).slash(objDTO.getId()).withSelfRel());
 		objDTO.add(linkTo(methodOn(TurmaResource.class).findAll()).withRel("lista de turmas"));
 		return ResponseEntity.ok().body(objDTO);
 	}
@@ -62,7 +62,7 @@ public class TurmaResource {
 		listDTO.forEach(x -> {
 			x.add(linkTo(methodOn(TurmaResource.class).find(x.getId())).withSelfRel());
 		});
-		Link link = linkTo(methodOn(TurmaResource.class).findAll()).withSelfRel();
+		Link link = linkTo(TurmaResource.class).withSelfRel();
 		CollectionModel<TurmaSimpleDTO> collectionModel = CollectionModel.of(listDTO, link);
 		
 		return ResponseEntity.ok().body(collectionModel);
