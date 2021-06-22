@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.dev.domain.enums.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
@@ -48,7 +49,7 @@ public class Aluno extends Usuario{
 	
 	public Aluno(Integer id, String nome, String CPF, String email, String senha, String matricula,
 			String nomeDaMae, String nomeDoPai, Date dataDeNascimento) {
-		super(id, nome, CPF, email, senha, "ALUNO");
+		super(id, nome, CPF, email, senha, Role.ALUNO);
 		this.matricula = matricula;
 		this.nomeDaMae = nomeDaMae;
 		this.nomeDoPai = nomeDoPai;

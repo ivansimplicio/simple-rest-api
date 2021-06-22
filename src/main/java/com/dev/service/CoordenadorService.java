@@ -7,9 +7,11 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dev.domain.Coordenador;
+import com.dev.domain.enums.Role;
 import com.dev.repository.CoordenadorRepository;
 import com.dev.service.exception.DataIntegrityException;
 import com.dev.service.exception.ObjectNotFoundException;
@@ -20,6 +22,9 @@ public class CoordenadorService implements StandardCRUDOperations<Coordenador>{
 	
 	@Autowired
 	private CoordenadorRepository repo;
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 
 	@Override
 	public Coordenador find(Integer id) {
@@ -36,7 +41,8 @@ public class CoordenadorService implements StandardCRUDOperations<Coordenador>{
 	@Override
 	public Coordenador insert(Coordenador obj) {
 		obj.setId(null);
-		obj.setRole("COORDENADOR");
+		obj.setSenha(pe.encode(obj.getSenha()));
+		obj.setRole(Role.COORDENADOR);
 		obj.setDataDeCadastro(new Date());
 		return save(obj);
 	}

@@ -6,9 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dev.domain.Aluno;
+import com.dev.domain.enums.Role;
 import com.dev.repository.AlunoRepository;
 import com.dev.service.exception.DataIntegrityException;
 import com.dev.service.exception.ObjectNotFoundException;
@@ -19,6 +21,9 @@ public class AlunoService implements StandardCRUDOperations<Aluno> {
 	
 	@Autowired
 	private AlunoRepository repo;
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 	
 	@Override
 	public Aluno find(Integer id) {
@@ -35,7 +40,8 @@ public class AlunoService implements StandardCRUDOperations<Aluno> {
 	@Override
 	public Aluno insert(Aluno obj) {
 		obj.setId(null);
-		obj.setRole("ALUNO");
+		obj.setSenha(pe.encode(obj.getSenha()));
+		obj.setRole(Role.ALUNO);
 		return save(obj);
 	}
 

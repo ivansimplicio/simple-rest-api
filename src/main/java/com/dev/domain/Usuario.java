@@ -10,7 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
-import lombok.AllArgsConstructor;
+import com.dev.domain.enums.Role;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Usuario implements Serializable {
 	
@@ -44,7 +44,22 @@ public class Usuario implements Serializable {
 	@Column(nullable = false)
 	private String senha;
 	
-	@Column(nullable = false)
-	private String role;
+	private Integer role;
+	
+	public Role getRole() {
+		return Role.toEnum(this.role);
+	}
+	
+	public void setRole(Role role) {
+		this.role = role.getCod();
+	}
 
+	public Usuario(Integer id, String nome, String cpf, String email, String senha, Role role) {
+		this.id = id;
+		this.nome = nome;
+		this.cpf = cpf;
+		this.email = email;
+		this.senha = senha;
+		this.role = role.getCod();
+	}
 }

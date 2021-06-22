@@ -6,9 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dev.domain.Professor;
+import com.dev.domain.enums.Role;
 import com.dev.repository.ProfessorRepository;
 import com.dev.service.exception.DataIntegrityException;
 import com.dev.service.exception.ObjectNotFoundException;
@@ -19,6 +21,9 @@ public class ProfessorService implements StandardCRUDOperations<Professor>{
 
 	@Autowired
 	private ProfessorRepository repo;
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 	
 	@Override
 	public Professor find(Integer id) {
@@ -35,7 +40,8 @@ public class ProfessorService implements StandardCRUDOperations<Professor>{
 	@Override
 	public Professor insert(Professor obj) {
 		obj.setId(null);
-		obj.setRole("PROFESSOR");
+		obj.setSenha(pe.encode(obj.getSenha()));
+		obj.setRole(Role.PROFESSOR);
 		return save(obj);
 	}
 

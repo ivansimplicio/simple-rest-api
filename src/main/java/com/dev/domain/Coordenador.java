@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.dev.domain.enums.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class Coordenador extends Usuario{
 	private Date dataDeCadastro;
 
 	public Coordenador(Integer id, String nome, String CPF, String email, String senha, Date dataDeCadastro) {
-		super(id, nome, CPF, email, senha, "COORDENADOR");
+		super(id, nome, CPF, email, senha, Role.COORDENADOR);
 		this.dataDeCadastro = dataDeCadastro;
 	}
 }

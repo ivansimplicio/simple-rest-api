@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import com.dev.domain.enums.Role;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,7 +31,7 @@ public class Professor extends Usuario {
 	
 	public Professor(Integer id, String nome, String CPF, String email, String senha,
 			Double salario, String formacao) {
-		super(id, nome, CPF, email, senha, "PROFESSOR");
+		super(id, nome, CPF, email, senha, Role.PROFESSOR);
 		this.salario = salario;
 		this.formacao = formacao;
 	}
