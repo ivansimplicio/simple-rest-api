@@ -13,11 +13,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "admins")
+@Entity(name = "coordenadores")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Admin extends Usuario{
+public class Coordenador extends Usuario{
 	
 	public static final long serialVersionUID = 1L;
 	
@@ -26,8 +26,8 @@ public class Admin extends Usuario{
 	@Column(name = "data_de_cadastro")
 	private Date dataDeCadastro;
 
-	public Admin(Integer id, String nome, String CPF, String email, String senha, Date dataDeCadastro) {
-		super(id, nome, CPF, email, senha, "ADMIN");
+	public Coordenador(Integer id, String nome, String CPF, String email, String senha, Date dataDeCadastro) {
+		super(id, nome, CPF, email, senha, "COORDENADOR");
 		this.dataDeCadastro = dataDeCadastro;
 	}
 }
