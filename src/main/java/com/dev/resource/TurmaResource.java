@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ public class TurmaResource {
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR', 'PROFESSOR')")
 	@ApiOperation("Buscar uma turma por ID")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<TurmaDTO> find(@PathVariable Integer id){
@@ -52,6 +54,7 @@ public class TurmaResource {
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR', 'PROFESSOR')")
 	@ApiOperation("Listar todas as turmas")
 	@GetMapping()
 	public ResponseEntity<CollectionModel<TurmaSimpleDTO>> findAll(){
@@ -68,6 +71,7 @@ public class TurmaResource {
 		return ResponseEntity.ok().body(collectionModel);
 	}
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR')")
 	@ApiOperation("Criar uma nova turma")
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody TurmaSaveDTO obj){
@@ -80,6 +84,7 @@ public class TurmaResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR')")
 	@ApiOperation("Atualizar os dados de uma turma")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody TurmaSaveDTO obj){
@@ -89,6 +94,7 @@ public class TurmaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR')")
 	@ApiOperation("Excluir uma turma")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
@@ -96,6 +102,7 @@ public class TurmaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR', 'PROFESSOR')")
 	@ApiOperation("Matricular alunos na turma")
 	@PutMapping(value = "/{id}/matricular")
 	public ResponseEntity<Void> matricular(@PathVariable Integer id, @RequestBody TurmaDTO obj){
@@ -105,6 +112,7 @@ public class TurmaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR', 'PROFESSOR')")
 	@ApiOperation("Remover alunos da turma")
 	@PutMapping(value = "/{id}/desmatricular")
 	public ResponseEntity<Void> desmatricular(@PathVariable Integer id, @RequestBody TurmaDTO obj){

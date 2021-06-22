@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,7 @@ public class ProfessorResource {
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@PreAuthorize("hasAnyRole('PROFESSOR', 'COORDENADOR')")
 	@ApiOperation("Buscar um professor por ID")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ProfessorDTO> find(@PathVariable Integer id){
@@ -53,6 +55,7 @@ public class ProfessorResource {
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
+	@PreAuthorize("hasAnyRole('PROFESSOR', 'COORDENADOR')")
 	@ApiOperation("Listar todos os professores")
 	@GetMapping()
 	public ResponseEntity<CollectionModel<UsuarioOutputDTO>> findAll(){
@@ -81,6 +84,7 @@ public class ProfessorResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@PreAuthorize("hasAnyRole('PROFESSOR')")
 	@ApiOperation("Atualizar os dados de um professor")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody ProfessorInputDTO obj){
@@ -90,6 +94,7 @@ public class ProfessorResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('PROFESSSOR')")
 	@ApiOperation("Excluir o cadastro de um professor")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){

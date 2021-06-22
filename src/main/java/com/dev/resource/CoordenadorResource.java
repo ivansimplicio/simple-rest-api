@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,7 @@ public class CoordenadorResource {
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR')")
 	@ApiOperation("Buscar um coordenador por ID")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<CoordenadorDTO> find(@PathVariable Integer id){
@@ -53,6 +55,7 @@ public class CoordenadorResource {
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR', 'PROFESSOR')")
 	@ApiOperation("Listar todos os coordenadores")
 	@GetMapping()
 	public ResponseEntity<CollectionModel<UsuarioOutputDTO>> findAll(){
@@ -68,6 +71,7 @@ public class CoordenadorResource {
 		return ResponseEntity.ok().body(collectionModel);
 	}
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR')")
 	@ApiOperation("Cadastrar um novo coordenador")
 	@PostMapping()
 	public ResponseEntity<Void> insert(@RequestBody CoordenadorSaveDTO obj){
@@ -80,6 +84,7 @@ public class CoordenadorResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR')")
 	@ApiOperation("Atualizar os dados de um coordenador")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody UsuarioInputDTO obj){
@@ -89,6 +94,7 @@ public class CoordenadorResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('COORDENADOR')")
 	@ApiOperation("Excluir o cadastro de um coordenador")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
