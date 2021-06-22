@@ -1,5 +1,8 @@
 package com.dev.resource;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +11,8 @@ import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,17 +47,25 @@ public class TurmaResource {
 	public ResponseEntity<TurmaDTO> find(@PathVariable Integer id){
 		Turma obj = service.find(id);
 		TurmaDTO objDTO = modelMapper.map(obj, TurmaDTO.class);
+		objDTO.add(linkTo(methodOn(TurmaResource.class).find(objDTO.getId())).withSelfRel());
+		objDTO.add(linkTo(methodOn(TurmaResource.class).findAll()).withRel("lista de turmas"));
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
 	@ApiOperation("Listar todas as turmas")
 	@GetMapping()
-	public ResponseEntity<List<TurmaSimpleDTO>> findAll(){
+	public ResponseEntity<CollectionModel<TurmaSimpleDTO>> findAll(){
 		List<Turma> list = service.findAll();
 		List<TurmaSimpleDTO> listDTO = list.stream()
 					.map(x -> modelMapper.map(x, TurmaSimpleDTO.class))
 					.collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDTO);
+		listDTO.forEach(x -> {
+			x.add(linkTo(methodOn(TurmaResource.class).find(x.getId())).withSelfRel());
+		});
+		Link link = linkTo(methodOn(TurmaResource.class).findAll()).withSelfRel();
+		CollectionModel<TurmaSimpleDTO> collectionModel = CollectionModel.of(listDTO, link);
+		
+		return ResponseEntity.ok().body(collectionModel);
 	}
 	
 	@ApiOperation("Criar uma nova turma")

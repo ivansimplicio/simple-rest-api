@@ -2,6 +2,8 @@ package com.dev.dto.usuario;
 
 import java.io.Serializable;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioOutputDTO implements Serializable{
+public class UsuarioOutputDTO extends RepresentationModel<UsuarioOutputDTO> implements Serializable{
 	
 	public static final long serialVersionUID = 1L;
 	

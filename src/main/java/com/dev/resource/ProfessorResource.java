@@ -1,5 +1,8 @@
 package com.dev.resource;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +11,8 @@ import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,18 +48,25 @@ public class ProfessorResource {
 	public ResponseEntity<ProfessorDTO> find(@PathVariable Integer id){
 		Professor obj = service.find(id);
 		ProfessorDTO objDTO = modelMapper.map(obj, ProfessorDTO.class);
+		objDTO.add(linkTo(methodOn(ProfessorResource.class).find(objDTO.getId())).withSelfRel());
+		objDTO.add(linkTo(methodOn(ProfessorResource.class).findAll()).withRel("lista de professores"));
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
 	@ApiOperation("Listar todos os professores")
 	@GetMapping()
-	public ResponseEntity<List<UsuarioOutputDTO>> findAll(){
+	public ResponseEntity<CollectionModel<UsuarioOutputDTO>> findAll(){
 		List<Professor> list = service.findAll();
 		List<UsuarioOutputDTO> listDTO = list.stream()
 				.map(x -> modelMapper.map(x, UsuarioOutputDTO.class))
 				.collect(Collectors.toList());
+		listDTO.forEach(x -> {
+			x.add(linkTo(methodOn(ProfessorResource.class).find(x.getId())).withSelfRel());
+		});
+		Link link = linkTo(methodOn(ProfessorResource.class).findAll()).withSelfRel();
+		CollectionModel<UsuarioOutputDTO> collectionModel = CollectionModel.of(listDTO, link);
 		
-		return ResponseEntity.ok().body(listDTO);
+		return ResponseEntity.ok().body(collectionModel);
 	}
 	
 	@ApiOperation("Cadastrar um novo professor")
