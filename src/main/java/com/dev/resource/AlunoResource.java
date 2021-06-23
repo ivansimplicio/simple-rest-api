@@ -44,7 +44,6 @@ public class AlunoResource {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	@PreAuthorize("hasAnyRole('ALUNO', 'COORDENADOR')")
 	@ApiOperation("Buscar um aluno por ID")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<AlunoDTO> find(@PathVariable Integer id){

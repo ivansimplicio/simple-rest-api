@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.dev.domain.Aluno;
 import com.dev.domain.enums.Role;
 import com.dev.repository.AlunoRepository;
+import com.dev.security.UserSS;
+import com.dev.service.exception.AuthorizationException;
 import com.dev.service.exception.DataIntegrityException;
 import com.dev.service.exception.ObjectNotFoundException;
 import com.dev.service.interfaces.StandardCRUDOperations;
@@ -27,6 +29,13 @@ public class AlunoService implements StandardCRUDOperations<Aluno> {
 	
 	@Override
 	public Aluno find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		
+		if(user == null || user.hasRole(Role.ALUNO) && !user.getId().equals(id)) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Aluno> obj = repo.findById(id);
 		return obj.orElseThrow(() -> 
 			new ObjectNotFoundException("Recurso não encontrado! Id: "+id+", Tipo: "+Aluno.class.getName()));

@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.dev.service.exception.AuthorizationException;
 import com.dev.service.exception.DataIntegrityException;
 import com.dev.service.exception.ObjectNotFoundException;
 
@@ -48,6 +49,14 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> accessDenied(AccessDeniedException e, HttpServletRequest req){
 		StandardError error = new StandardError(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(),
 				"Forbidden", "Access Denied", req.getRequestURI());
+		
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+	}
+	
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest req){
+		StandardError error = new StandardError(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(),
+				"Forbidden", e.getMessage(), req.getRequestURI());
 		
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
 	}

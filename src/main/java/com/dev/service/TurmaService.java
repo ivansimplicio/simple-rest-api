@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.dev.domain.Aluno;
 import com.dev.domain.Turma;
+import com.dev.domain.enums.Role;
 import com.dev.repository.AlunoRepository;
 import com.dev.repository.TurmaRepository;
+import com.dev.security.UserSS;
+import com.dev.service.exception.AuthorizationException;
 import com.dev.service.exception.DataIntegrityException;
 import com.dev.service.exception.ObjectNotFoundException;
 import com.dev.service.interfaces.StandardCRUDOperations;
@@ -34,7 +37,14 @@ public class TurmaService implements StandardCRUDOperations<Turma>{
 	
 	@Override
 	public Turma find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
 		Optional<Turma> obj = repo.findById(id);
+		if(obj != null) {
+			if(user == null || !user.hasRole(Role.COORDENADOR) && !user.getId().equals(obj.get().getProfessor().getId())) {
+				throw new AuthorizationException("Acesso negado");
+			}
+		}
 		return obj.orElseThrow(() ->
 				new ObjectNotFoundException("Recurso não encontrado! Id: "+id+", Tipo: "+Turma.class.getName()));
 	}

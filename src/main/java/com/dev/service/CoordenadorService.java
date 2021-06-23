@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.dev.domain.Coordenador;
 import com.dev.domain.enums.Role;
 import com.dev.repository.CoordenadorRepository;
+import com.dev.security.UserSS;
+import com.dev.service.exception.AuthorizationException;
 import com.dev.service.exception.DataIntegrityException;
 import com.dev.service.exception.ObjectNotFoundException;
 import com.dev.service.interfaces.StandardCRUDOperations;
@@ -49,6 +51,13 @@ public class CoordenadorService implements StandardCRUDOperations<Coordenador>{
 
 	@Override
 	public Coordenador update(Coordenador obj) {
+		
+		UserSS user = UserService.authenticated();
+		
+		if(user == null || !user.getId().equals(obj.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Coordenador objAux = find(obj.getId());
 		updateData(objAux, obj);
 		return save(objAux);
@@ -56,6 +65,13 @@ public class CoordenadorService implements StandardCRUDOperations<Coordenador>{
 
 	@Override
 	public void delete(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		
+		if(user == null || !user.getId().equals(id)) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		find(id);
 		try {
 			repo.deleteById(id);
