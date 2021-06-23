@@ -1,4 +1,4 @@
-package com.dev.dto.aluno;
+package com.dev.dto;
 
 import java.io.Serializable;
 
